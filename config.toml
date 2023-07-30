@@ -1,0 +1,15 @@
+[[Starters]]
+Name = "Blender3.4"
+Cmd = "Blender"
+Args = []
+
+[[Starters]]
+Name = "Blender3.5"
+Cmd = "Blender"
+Args = []
+
+[[Starters]]
+Name = "Blender3.6"
+Cmd = "Blender"
+Args = []
+
