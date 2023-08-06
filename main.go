@@ -49,7 +49,8 @@ func main() {
 	go func() {
 		w := app.NewWindow(
 			app.Title("Starter"),
-			app.Size(unit.Dp(200), unit.Dp(50*len(cfg.Starters))),
+			app.MinSize(unit.Dp(200), unit.Dp(50*len(cfg.Starters))),
+			app.MaxSize(unit.Dp(200), unit.Dp(50*len(cfg.Starters))),
 		)
 		err := run(w, cfg)
 		if err != nil {
