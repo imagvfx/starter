@@ -23,6 +23,7 @@ type Config struct {
 
 type Starter struct {
 	Name string
+	Env  []string
 	Cmd  string
 	Args []string
 	Btn  *widget.Clickable
@@ -90,11 +91,16 @@ func run(w *app.Window, cfg *Config) error {
 					if s.Cmd == "" {
 						continue
 					}
+					env := os.Environ()
+					for i := range s.Env {
+						env = append(env, os.ExpandEnv(s.Env[i]))
+					}
 					s.Cmd = os.ExpandEnv(s.Cmd)
 					for i := range s.Args {
 						s.Args[i] = os.ExpandEnv(s.Args[i])
 					}
 					cmd := exec.Command(s.Cmd, s.Args...)
+					cmd.Env = env
 					cmd.Stdin = os.Stdin
 					cmd.Stdout = os.Stdout
 					cmd.Stderr = os.Stderr
