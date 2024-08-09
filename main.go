@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 
 	"gioui.org/app"
 	"gioui.org/font/gofont"
@@ -91,16 +93,19 @@ func run(w *app.Window, cfg *Config) error {
 					if s.Cmd == "" {
 						continue
 					}
-					env := os.Environ()
 					for i := range s.Env {
-						env = append(env, os.ExpandEnv(s.Env[i]))
+						env := s.Env[i]
+						k, v, ok := strings.Cut(env, "=")
+						if !ok {
+							return fmt.Errorf("invalid syntax for Env:", env)
+						}
+						os.Setenv(k, v)
 					}
 					s.Cmd = os.ExpandEnv(s.Cmd)
 					for i := range s.Args {
 						s.Args[i] = os.ExpandEnv(s.Args[i])
 					}
 					cmd := exec.Command(s.Cmd, s.Args...)
-					cmd.Env = env
 					cmd.Stdin = os.Stdin
 					cmd.Stdout = os.Stdout
 					cmd.Stderr = os.Stderr
