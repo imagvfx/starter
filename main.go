@@ -94,7 +94,7 @@ func run(w *app.Window, cfg *Config) error {
 						continue
 					}
 					for i := range s.Env {
-						env := s.Env[i]
+						env := os.ExpandEnv(s.Env[i])
 						k, v, ok := strings.Cut(env, "=")
 						if !ok {
 							return fmt.Errorf("invalid syntax for Env:", env)
